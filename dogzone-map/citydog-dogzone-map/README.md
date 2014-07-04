@@ -1,8 +1,9 @@
-seed-element
+Dogzone Map
 ================
 
-See the [component page](http://polymerlabs.github.io/seed-element) for more information.
+run bower.json file with  ~: bower install. <br>
+With this all components will be downloaded next to the citydog-dogzone-map folder
 
-## Getting Started
+For demo purposes there is a www folder with a index.html page.
 
-We've put together a [guide to seed-element](http://www.polymer-project.org/docs/start/reusableelements.html) to help get you rolling.
+
