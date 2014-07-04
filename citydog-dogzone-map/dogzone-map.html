@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-map/google-map.html">
+<link rel="import" href="../core-ajax/core-ajax.html">
+<link rel="import" href="../polymer-ui-card/polymer-ui-card.html">
+<link rel="import" href="../x-tag-imports/x-tag-flipbox.html">
+
+
+<polymer-element name="dogzone-map">
+
+<template>
+
+   <link rel="stylesheet" href="dogzone-map.css" />
+
+   <core-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" response="{{parks}}"></core-ajax>
+
+
+	 <polymer-ui-card>
+     	<google-map map"{{map}}" latitude="37.77493" longitude="-122.41942" fitToMarkers>
+      		<template repeat="{{parks.features}}">
+                    <google-map-marker latitude="{{geometry.coordinates[1]}}" longitude="{{geometry.coordinates[0]}}" title="{{properties.PARK}} : {{properties.FLAECHE}}"></google-map-marker>
+        	</template>                
+    	</google-map>
+    </polymer-ui-card>
+    
+
+</template>
+
+  <script>
+
+    Polymer('dogzone-map', {  
+    
+    });
+
+  </script>
+
+</polymer-element>
