@@ -4,7 +4,7 @@ dogzone-map
 Google Map WebComponent Import with all dogzones from Vienna
 
 Installation: Download dogzone-map and put it in folder like:
-development	|
+<br>development	|
 			|__dogzone-map	|
 							|__citydog-dogzone-map
 							|__www
