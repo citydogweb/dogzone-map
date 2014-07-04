@@ -1,0 +1,17 @@
+{
+  "name": "citydog-dogzone-map",
+  "version": "0.0.1",
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "google-map": "PolymerLabs/google-map#~0.2.3",
+    "polymer-ui-card": "PolymerLabs/polymer-ui-card#~0.2.3",
+    "core-ajax": "Polymer/core-ajax#~0.2.3",
+    "gplus-button": "robdodson/gplus-button#master",
+    "google-map-streetview-panorama": "robdodson/google-map-streetview-panorama#~0.0.1"
+  },
+  "resolutions": {
+    "polymer": "master",
+    "platform": "master",
+    "core-component-page": "master"
+  }
+}
