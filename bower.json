@@ -1,6 +1,6 @@
 {
   "name": "citydog-dogzone-map",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "polymer": "Polymer/polymer#master",
     "google-map": "PolymerLabs/google-map#master",
