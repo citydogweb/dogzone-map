@@ -1,0 +1,14 @@
+{
+  "name": "dogzone-map",
+  "homepage": "https://github.com/tobiashutterer/dogzone-map",
+  "_release": "32369172c5",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "32369172c543e4ef1c511977e5ba0414d92260c6"
+  },
+  "_source": "git://github.com/tobiashutterer/dogzone-map.git",
+  "_target": "master",
+  "_originalSource": "tobiashutterer/dogzone-map",
+  "_direct": true
+}
