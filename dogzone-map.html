@@ -28,7 +28,7 @@ Example:
 
    <core-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" response="{{parks}}"></core-ajax>
 
-     	<google-map map"{{map}}" fitToMarkers fit>
+     	<google-map fitToMarkers fit>
       		<template repeat="{{parks.features}}">
                     <google-map-marker latitude="{{geometry.coordinates[1]}}" longitude="{{geometry.coordinates[0]}}" title="{{properties.PARK}} : {{properties.FLAECHE}}" icon="https://raw.githubusercontent.com/citydogweb/dogzone-map/master/dog_map_icon.png">
                     <p horizontal layout center><img style="margin: 16px;" src="../dogzone-map/dog_map_icon.png"><b>{{properties.PARK}}</b></p>
