@@ -3,11 +3,16 @@
   "version": "0.0.2",
   "dependencies": {
     "polymer": "Polymer/polymer#master",
-    "google-map": "PolymerLabs/google-map#master",
-    "core-ajax": "Polymer/core-ajax#master"    
+    "google-map": "GoogleWebComponents/google-map#master",
+    "core-ajax": "Polymer/core-ajax#master",
+    "google-sheets": "GoogleWebComponents/google-sheets#~0.0.2"
   },
   "resolutions": {
+    "google-map": "master",
     "polymer": "master",
-    "platform": "master"
+    "platform": "master",
+    "core-component-page": "master",
+    "google-apis": "master",
+    "core-shared-lib": "master"
   }
 }
