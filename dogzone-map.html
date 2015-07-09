@@ -23,24 +23,24 @@ Example:
 <dom-module id="dogzone-map">
 
   <style>
-    :host {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-    }
-    google-map {
-      width: 100%;
-      height: 100%;
-      display: block;
-      position: absolute;
-    }
+  :host {
+    position: relative;
+    display: block;
+    height: 100%;
+  }
+  #map {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
   </style>
 
   <template>
 
     <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}'
-    handleAs="json" on-response="handleResponse"></iron-ajax>
+    handleAs="json" on-response="handleParks" on-error="handleParkError"></iron-ajax>
 
     <google-map id="map" fit-to-markers on-google-map-click="handleClick" click-events>
       <template is="dom-repeat" items="{{coords.features}}" as="coord">
@@ -61,14 +61,20 @@ Example:
   Polymer({
     is: 'dogzone-map',
 
-
     ready: function() {
     },
 
-    handleResponse: function(event, response) {
-      this.coords = response.response,
-      console.log(this.coords);
-      console.log(this.$.map);
+    handleParks: function(event, response) {
+      this.coords = response.response;
+
+    //  console.log(this.coords);
+    //  console.log(this.$.map);
+
+    },
+
+    handleParkError: function(event, error) {
+      console.log("ERROR");
+      console.log(error);
     },
 
     handleClick: function(event) {
