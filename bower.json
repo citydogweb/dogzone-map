@@ -1,10 +1,10 @@
 {
   "name": "dogzone-map",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "authors": [
-    "Anonymous <anonymous@example.com>"
+    "Tobias Hutterer <tobias.hutterer@gmail.com>"
   ],
-  "description": "An element providing a solution to no problem in particular.",
+  "description": "An element providing a Google Map with all dog parks in Vienna / Austria.",
   "keywords": [
     "web-component",
     "web-components",
@@ -13,7 +13,7 @@
   ],
   "main": "dogzone-map.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/<USERNAME>/dogzone-map/",
+  "homepage": "https://github.com/citydogweb/dogzone-map/",
   "ignore": [
     "/.*",
     "/test/",
