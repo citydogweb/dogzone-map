@@ -44,7 +44,7 @@ Example:
 
     <google-map id="map" fit-to-markers on-google-map-click="handleClick" click-events>
       <template is="dom-repeat" items="{{coords.features}}" as="coord">
-        <google-map-marker latitude="{{coord.geometry.coordinates.1}}" longitude="{{coord.geometry.coordinates.0}}" title="{{coords.features.proprties.PARK}}">
+        <google-map-marker latitude="{{coord.geometry.coordinates.1}}" longitude="{{coord.geometry.coordinates.0}}" title="{{coords.features.proprties.PARK}}" icon="../dog_map_icon.png">
           <div style="margin-left: 16px; margin-bottom: 16px;">
   	         <p>Hier steht Text</p>
           </div>
