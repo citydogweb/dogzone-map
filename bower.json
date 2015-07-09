@@ -1,18 +1,31 @@
 {
   "name": "dogzone-map",
-  "version": "0.0.2",
+  "version": "1.0.0",
+  "authors": [
+    "Anonymous <anonymous@example.com>"
+  ],
+  "description": "An element providing a solution to no problem in particular.",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "seed"
+  ],
+  "main": "dogzone-map.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/<USERNAME>/dogzone-map/",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/demo/"
+  ],
   "dependencies": {
-    "polymer": "Polymer/polymer#master",
-    "google-map": "GoogleWebComponents/google-map#master",
-    "core-ajax": "Polymer/core-ajax#master",
-    "google-sheets": "GoogleWebComponents/google-sheets#~0.0.2"
+    "polymer": "Polymer/polymer#^1.0.0",
+    "google-map": "GoogleWebComponents/google-map#~1.0.3",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.0.2"
   },
-  "resolutions": {
-    "google-map": "master",
-    "polymer": "master",
-    "platform": "master",
-    "core-component-page": "master",
-    "google-apis": "master",
-    "core-shared-lib": "master"
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*"
   }
 }
