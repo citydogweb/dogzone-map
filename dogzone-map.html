@@ -11,6 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../google-map/google-map.html">
 
+
 <!--
 An element providing a map of all dog parks in Vienna.
 
@@ -19,34 +20,37 @@ Example:
     <dogzone-map></dogzone-map>
 
 @demo
+
 -->
 <dom-module id="dogzone-map">
 
   <style>
-  :host {
-    position: relative;
-    display: block;
-    height: 100%;
-  }
-  #map {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
+    :host {
+      position: relative;
+      display: block;
+      height: 100%;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
   </style>
 
   <template>
 
-    <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}'
-    handleAs="json" on-response="handleParks" on-error="handleParkError"></iron-ajax>
+    <x-websocket id='xws' auto url="ws://echo.websocket.org" on-open="handleWsOpen"></x-websocket>
+
+    <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="handleParks" on-error="handleParkError"></iron-ajax>
 
     <google-map id="map" fit-to-markers on-google-map-click="handleClick" click-events>
       <template is="dom-repeat" items="{{coords.features}}" as="coord">
-        <google-map-marker latitude="{{coord.geometry.coordinates.1}}" longitude="{{coord.geometry.coordinates.0}}" title="{{coords.features.proprties.PARK}}" icon="../dog_map_icon.png">
+        <google-map-marker latitude="{{coord.geometry.coordinates.1}}" longitude="{{coord.geometry.coordinates.0}}" title="{{coords.features.proprties.PARK}}" icon="{{parkIconUrl}}">
           <div style="margin-left: 16px; margin-bottom: 16px;">
-  	         <p>Hier steht Text</p>
+            <p>{{parkIconUrl}}</p>
           </div>
         </google-map-marker>
       </template>
@@ -57,29 +61,33 @@ Example:
 </dom-module>
 
 <script>
-
   Polymer({
     is: 'dogzone-map',
 
-    ready: function() {
+    properties: {
+
+      /**
+       * A custom icon path for map markers
+       */
+      parkIconUrl: {
+        type: String,
+        value: '../dog_map_icon.png'
+      }
+
     },
+
+    ready: function() {},
 
     handleParks: function(event, response) {
       this.coords = response.response;
-
-    //  console.log(this.coords);
-    //  console.log(this.$.map);
-
     },
 
     handleParkError: function(event, error) {
       console.log("ERROR");
-      console.log(error);
     },
 
     handleClick: function(event) {
       this.$.map.resize();
     }
   });
-
 </script>
