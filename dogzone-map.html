@@ -13,7 +13,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../paper-fab/paper-fab.html">
 <link rel="import" href="../paper-material/paper-material.html">
-<link rel="import" href="map-menu.html">
 
 <!--
 An element providing a map of all dog parks in Vienna.
@@ -178,17 +177,12 @@ Example:
     ready: function() {},
 
     handleParks: function(event, response) {
-      console.log(response.response);
+      // console.log(response.response);
       this.coords = response.response;
     },
 
     handleParkError: function(event, error) {
-      console.log("ERROR");
-    },
-
-    handleMenu: function(event) {
-      console.log("Menu clicked");
-
+      // console.log("ERROR");
     },
 
     handleMapClick: function(event) {
@@ -205,7 +199,7 @@ Example:
       //get index from marker and use it to get park-node from COORDS(ajax-response)
       this.selectedPark = this.coords.features[marker.model.__data__.index];
 
-      console.log(this.selectedPark.properties);
+      // console.log(this.selectedPark.properties);
 
 
       this.$.infocontainer.hidden = false;
