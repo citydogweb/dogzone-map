@@ -10,7 +10,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../google-map/google-map.html">
-
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="map-menu.html">
 
 <!--
 An element providing a map of all dog parks in Vienna.
@@ -31,6 +34,37 @@ Example:
       height: 100%;
     }
 
+    paper-fab.orange {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      --paper-fab-background: var(--paper-orange-500);
+      --paper-fab-keyboard-focus-background: var(--paper-orange-900);
+    }
+
+    animated-menu {
+      display: none;
+      padding: 16px;
+      background: white;
+      color: black;
+      margin: 0 auto;
+      text-align: left;
+      border-style: solid;
+      border-width: thin;
+    }
+
+    h2 {
+      color: #262626;
+    }
+
+    h4 {
+      color: #505050;
+    }
+
+    h5 {
+      color: #616161;
+    }
+
     #map {
       position: absolute;
       top: 0;
@@ -38,26 +72,82 @@ Example:
       bottom: 0;
       left: 0;
     }
+
+    #infocontainer {
+      background-color: white;
+      position: absolute;
+      padding: 6px;
+      height: 80%;
+      width: 28%;
+      right: 32px;
+      bottom: 10%;
+    }
+
+    #infomap {
+      padding: 6px;
+      height: 55%;
+      /*width: 100%;*/
+      /*height: 40%;*/
+    }
+
+    #infocontent {
+      padding-left: 24px;
+      height: 35%;
+      /*width: 100%;*/
+      /*height: 40%;*/
+    }
+
+    #satmap {
+      height: 100%;
+      width: 100%;
+    }
   </style>
 
   <template>
-
-    <x-websocket id='xws' auto url="ws://echo.websocket.org" on-open="handleWsOpen"></x-websocket>
-
     <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="handleParks" on-error="handleParkError"></iron-ajax>
-
-    <google-map id="map" fit-to-markers on-google-map-click="handleClick" click-events>
+    <google-map id="map" disable-default-ui fit-to-markers click-events  on-google-map-click="handleMapClick" click-events>
       <template is="dom-repeat" items="{{coords.features}}" as="coord">
-        <google-map-marker latitude="{{coord.geometry.coordinates.1}}" longitude="{{coord.geometry.coordinates.0}}" title="{{coords.features.proprties.PARK}}" icon="{{parkIconUrl}}">
-          <div style="margin-left: 16px; margin-bottom: 16px;">
-            <p>{{parkIconUrl}}</p>
-          </div>
+        <google-map-marker latitude="{{coord.geometry.coordinates.1}}" longitude="{{coord.geometry.coordinates.0}}" title="{{coord.properties.PARK}}" icon="{{parkIconUrl}}" on-google-map-marker-click="handleClick" click-events>
         </google-map-marker>
       </template>
     </google-map>
-
+    <!-- <paper-fab id="fab" mini icon="menu" class="orange" on-click="handleMenu"></paper-fab> -->
+    <paper-material id="infocontainer" elevation="5" hidden="true">
+      <div id="infomap">
+        <google-map id="satmap" disable-default-ui map-type="satellite" zoom="18">
+        </google-map>
+      </div>
+      <div id="infocontent">
+        <h2>
+          <p id="pname">{{selectedPark.properties.PARK}}</p>
+        </h2>
+        <h4>
+          <p>
+            <span>Typ: </span>
+            <span>{{selectedPark.properties.TYP}}</span>
+          </p>
+        </h4>
+        <h5>
+          <p>
+            <span>Fläche: </span>
+            <span>{{selectedPark.properties.FLAECHE}}</span>
+          </p>
+          <p>
+            <span>Einfriedung: </span>
+            <span>{{selectedPark.properties.EINFRIEDUNG}}</span>
+          </p>
+          <p>
+            <span>geo:(</span>
+            <span>{{selectedPark.geometry.coordinates.1}}</span>
+            <span> / </span>
+            <span>{{selectedPark.geometry.coordinates.0}}</span>
+            <span>)</span>
+          </p>
+        </h5>
+      </div>
+      <paper-fab id="fab" mini icon="close" class="orange" on-click="handleClose"></paper-fab>
+    </paper-material>
   </template>
-
 </dom-module>
 
 <script>
@@ -71,14 +161,35 @@ Example:
        */
       parkIconUrl: {
         type: String,
-        value: '../dog_map_icon.png'
-      }
+        value: 'https://raw.githubusercontent.com/citydogweb/dogzone-map/master/dog_map_icon.png'
+      },
 
+
+      /**
+       * A Object of the currently selected park
+       */
+      selectedPark: {
+        type: Object,
+        value: function() {
+          return {};
+        }
+      },
+
+      /**
+       * A Coordinates of dog parks from opendata.wien
+       */
+      coords: {
+        type: Object,
+        value: function() {
+          return {};
+        }
+      }
     },
 
     ready: function() {},
 
     handleParks: function(event, response) {
+      console.log(response.response);
       this.coords = response.response;
     },
 
@@ -86,8 +197,34 @@ Example:
       console.log("ERROR");
     },
 
-    handleClick: function(event) {
-      this.$.map.resize();
+    handleMenu: function(event) {
+      console.log("Menu clicked");
+
+    },
+
+    handleMapClick: function(event) {
+      this.$.infocontainer.hidden = true;
+    },
+
+    handleClose: function(event) {
+      // console.log("Close clicked");
+      this.$.infocontainer.hidden = true;
+
+    },
+
+    handleClick: function(marker) {
+      //get index from marker and use it to get park-node from COORDS(ajax-response)
+      this.selectedPark = this.coords.features[marker.model.__data__.index];
+
+      console.log(this.selectedPark.properties);
+
+
+      this.$.infocontainer.hidden = false;
+      this.$.satmap.longitude = marker.detail.latLng.K;
+      this.$.satmap.latitude = marker.detail.latLng.G;
+      this.$.satmap.resize();
+
+
     }
   });
 </script>

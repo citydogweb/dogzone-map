@@ -22,7 +22,9 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",
     "google-map": "GoogleWebComponents/google-map#~1.0.3",
-    "iron-ajax": "PolymerElements/iron-ajax#~1.0.2"
+    "iron-ajax": "PolymerElements/iron-ajax#~1.0.2",
+    "paper-fab": "PolymerElements/paper-fab#~1.0.3",
+    "paper-material": "PolymerElements/paper-material#~1.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
