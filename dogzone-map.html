@@ -180,12 +180,7 @@ Example:
     ready: function() {},
 
     handleParks: function(event, response) {
-      // console.log(response.response);
       this.coords = response.response.features;
-    },
-
-    handleParkError: function(event, error) {
-      // console.log("ERROR");
     },
 
     handleMapClick: function(event) {
@@ -193,19 +188,16 @@ Example:
     },
 
     handleClose: function(event) {
-      // console.log("Close clicked");
-      this.$.infocontainer.hidden = true;
+     this.$.infocontainer.hidden = true;
     },
 
     handleClick: function(marker) {
       //get index from marker and use it to get park-node from COORDS(ajax-response)
       this.selectedPark = this.coords[marker.model.__data__.index];
-
       this.$.infocontainer.hidden = false;
       this.$.satmap.longitude = marker.target.longitude;
       this.$.satmap.latitude = marker.target.latitude;
       this.$.satmap.resize();
-
 
     }
   });
