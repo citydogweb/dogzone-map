@@ -78,15 +78,11 @@ Example:
     #infomap {
       padding: 6px;
       height: 55%;
-      /*width: 100%;*/
-      /*height: 40%;*/
     }
 
     #infocontent {
       padding-left: 24px;
       height: 35%;
-      /*width: 100%;*/
-      /*height: 40%;*/
     }
 
     #satmap {
@@ -181,16 +177,7 @@ Example:
       }
     },
 
-    // observers: [
-    //   'coordsChanged(coords.*)'
-    // ],
-
     ready: function() {},
-
-    // coordsChanged: function(changeRecord) {
-    //   console.log("Change of COORDS noticed!");
-    // },
-
 
     handleParks: function(event, response) {
       // console.log(response.response);
@@ -208,25 +195,15 @@ Example:
     handleClose: function(event) {
       // console.log("Close clicked");
       this.$.infocontainer.hidden = true;
-
     },
-
-    // handleDelete: function(event) {
-    //   console.log("DELETE clicked");
-    //   console.log(this.coords);
-    //   this.coords.splice(0, 100);
-    //   this.$.map.resize();
-    //   console.log(this.coords);
-    // },
-
 
     handleClick: function(marker) {
       //get index from marker and use it to get park-node from COORDS(ajax-response)
       this.selectedPark = this.coords[marker.model.__data__.index];
 
       this.$.infocontainer.hidden = false;
-      this.$.satmap.longitude = marker.detail.latLng.K;
-      this.$.satmap.latitude = marker.detail.latLng.G;
+      this.$.satmap.longitude = marker.target.longitude;
+      this.$.satmap.latitude = marker.target.latitude;
       this.$.satmap.resize();
 
 
