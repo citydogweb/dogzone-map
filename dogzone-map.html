@@ -92,10 +92,10 @@ Example:
   </style>
 
   <template>
-    <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="handleParks" on-error="handleParkError"></iron-ajax>
-    <google-map id="map" disable-default-ui fit-to-markers click-events on-google-map-click="handleMapClick" click-events>
+    <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="_handleParks" on-error="handleParkError"></iron-ajax>
+    <google-map id="map" disable-default-ui fit-to-markers click-events on-google-map-click="_handleMapClick" click-events>
       <template is="dom-repeat" items="{{coords}}" as="coord">
-        <google-map-marker latitude="{{coord.geometry.coordinates.1}}" longitude="{{coord.geometry.coordinates.0}}" title="{{coord.properties.PARK}}" icon="{{parkIconUrl}}" on-google-map-marker-click="handleClick" click-events>
+        <google-map-marker latitude="{{coord.geometry.coordinates.1}}" longitude="{{coord.geometry.coordinates.0}}" title="{{coord.properties.PARK}}" icon="{{parkIconUrl}}" on-google-map-marker-click="_handleClick" click-events>
         </google-map-marker>
       </template>
     </google-map>
@@ -133,7 +133,7 @@ Example:
           </p>
         </h5>
       </div>
-      <paper-fab id="fab" mini icon="map-iconset-svg:close" class="amber" on-click="handleClose"></paper-fab>
+      <paper-fab id="fab" mini icon="map-iconset-svg:close" class="amber" on-click="_handleClose"></paper-fab>
     </paper-material>
     <!-- <paper-fab id="delete" mini icon="map-iconset-svg:close" class="amber" on-click="handleDelete"></paper-fab> -->
   </template>
@@ -154,7 +154,6 @@ Example:
         value: 'https://raw.githubusercontent.com/citydogweb/dogzone-map/master/dog_map_icon.png'
       },
 
-
       /**
        * A Object of the currently selected park
        */
@@ -166,7 +165,7 @@ Example:
       },
 
       /**
-       * A Coordinates of dog parks from opendata.wien
+       * Coordinates of dog parks
        */
       coords: {
         type: Array
@@ -179,19 +178,19 @@ Example:
 
     ready: function() {},
 
-    handleParks: function(event, response) {
+    _handleParks: function(event, response) {
       this.coords = response.response.features;
     },
 
-    handleMapClick: function(event) {
+    _handleMapClick: function(event) {
       this.$.infocontainer.hidden = true;
     },
 
-    handleClose: function(event) {
+    _handleClose: function(event) {
      this.$.infocontainer.hidden = true;
     },
 
-    handleClick: function(marker) {
+    _handleClick: function(marker) {
       //get index from marker and use it to get park-node from COORDS(ajax-response)
       this.selectedPark = this.coords[marker.model.__data__.index];
       this.$.infocontainer.hidden = false;
