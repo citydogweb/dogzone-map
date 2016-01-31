@@ -1,6 +1,6 @@
 {
   "name": "dogzone-map",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "authors": [
     "Tobias Hutterer <tobias.hutterer@gmail.com>"
   ],
@@ -19,11 +19,11 @@
     "/test/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.0.0",
-    "google-map": "GoogleWebComponents/google-map#~1.0.3",
-    "iron-ajax": "PolymerElements/iron-ajax#~1.0.2",
-    "paper-fab": "PolymerElements/paper-fab#~1.0.3",
-    "paper-material": "PolymerElements/paper-material#~1.0.1",
+    "polymer": "Polymer/polymer#^1.2.4",
+    "google-map": "GoogleWebComponents/google-map#~1.1.9",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.1.1",
+    "paper-fab": "PolymerElements/paper-fab#~1.1.2",
+    "paper-material": "PolymerElements/paper-material#~1.0.6",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#~1.0.4"
   },
   "devDependencies": {
