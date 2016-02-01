@@ -89,6 +89,11 @@
     Polymer({
       is: 'dogzone-detail',
       properties: {
+        hidden: {
+          type: Boolean,
+          notify: true,
+          reflectToAttribute: true
+        },
         name: String,
         type: String,
         size: String,
@@ -117,10 +122,11 @@
       },
 
       observers: [
-        '_updateLatLong( latitude, longitude)'
+        '_updateLatLong( hidden, latitude, longitude)'
       ],
 
-      _updateLatLong: function( latitude, longitude) {
+      _updateLatLong: function( hidden, latitude, longitude) {
+          this.hidden = hidden;
           this.$.satmap.resize();
       },
 

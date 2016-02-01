@@ -93,10 +93,6 @@ Example:
        */
       coords: {
         type: Array
-          // notify: true
-          // value: function() {
-          //   return {};
-          // }
       }
     },
 
@@ -119,7 +115,7 @@ Example:
       //get index from marker and use it to get park-node from COORDS(ajax-response)
       this.selectedPark = this.coords[marker.model.__data__.index];
       this.$.infocontainer.hidden = false;
-      this.$.infocontainer.resize();
+
 
 
     }
