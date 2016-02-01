@@ -1,14 +1,105 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../google-map/google-map.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+<link rel="import" href="../paper-material/paper-material.html">
+
+<!-- all used icons to not load full iconsets -->
+<link rel="import" href="map-iconset-svg.html">
 <dom-module id="dogzone-detail">
   <template>
     <style>
       :host {
         display: block;
+        background-color: white;
+      }
+      paper-fab.amber {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        --paper-fab-background: var(--paper-amber-500);
+        --paper-fab-keyboard-focus-background: var(--paper-amber-900);
+      }
+
+      h2 {
+        color: #262626;
+      }
+
+      h4 {
+        color: #505050;
+      }
+
+      h5 {
+        color: #616161;
+      }
+
+
+      #infomap {
+        padding: 6px;
+        height: 55%;
+      }
+
+      #infocontent {
+        padding-left: 24px;
+        height: 35%;
+      }
+
+      #satmap {
+        height: 100%;
+        width: 100%;
       }
     </style>
+    <paper-material  elevation="5" >
+      <div id="infomap">
+        <google-map id="satmap" disable-default-ui map-type="satellite" zoom="18">
+        </google-map>
+      </div>
+      <div id="infocontent">
+        <h2>
+          <p id="pname">[[name]]</p>
+        </h2>
+        <h4>
+          <p>
+            <!-- <span>Typ: </span> -->
+            <span>[[type]]</span>
+          </p>
+        </h4>
+        <h5>
+          <p>
+            <span>Fläche: </span>
+            <span>[[size]]</span>
+          </p>
+          <p>
+            <span>Einfriedung: </span>
+            <span>[[fence]]</span>
+          </p>
+          <p>
+            <span>geo:(</span>
+            <span>[[longitude]]</span>
+            <span> / </span>
+            <span>[[latitude]]</span>
+            <span>)</span>
+          </p>
+        </h5>
+      </div>
+      <paper-fab id="fab" mini icon="map-iconset-svg:close" class="amber" on-click="_handleClose"></paper-fab>
+    </paper-material>
   </template>
   <script>
     Polymer({
-      is: 'dogzone-detail'
+      is: 'dogzone-detail',
+      properties: {
+        name: String,
+        type: String,
+        size: String,
+        fence: String,
+        longitude: String,
+        latitude: String
+      },
+      _handleClose: function(event) {
+       this.hidden = true;
+      }
     });
   </script>
 </dom-module>
