@@ -49,7 +49,7 @@ Example:
     <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="_handleParks" on-error="handleParkError"></iron-ajax>
     <google-map id="map" disable-default-ui fit-to-markers click-events on-google-map-click="_handleMapClick" click-events>
       <template is="dom-repeat" items="[[coords]]" as="coord">
-        <google-map-marker latitude="[[coord.geometry.coordinates.1]]" longitude="{{coord.geometry.coordinates.0}}" title="{{coord.properties.PARK}}" icon="{{parkIconUrl}}" on-google-map-marker-click="_handleClick" click-events>
+        <google-map-marker latitude="[[coord.geometry.coordinates.1]]" longitude="[[coord.geometry.coordinates.0]]" title="[[coord.properties.PARK]]" icon="[[parkIconUrl]]" on-google-map-marker-click="_handleClick" click-events>
         </google-map-marker>
       </template>
     </google-map>
