@@ -53,7 +53,12 @@ Example:
         </google-map-marker>
       </template>
     </google-map>
-    <dogzone-detail name="PARKNAME A" size="400m²" longitude="1" latitude="1" id="infocontainer" hidden="true"></dogzone-detail>
+    <dogzone-detail id="infocontainer"
+                    name="[[selectedPark.properties.PARK]]" 
+                    size="400m²"
+                    longitude="1"
+                    latitude="1"
+                    hidden="true"></dogzone-detail>
   </template>
 </dom-module>
 
