@@ -46,10 +46,10 @@ Example:
       }
     </style>
 
-    <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="_handleParks" on-error="handleParkError"></iron-ajax>
+    <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="_handleParks"></iron-ajax>
     <google-map id="map" disable-default-ui fit-to-markers click-events on-google-map-click="_handleMapClick" click-events>
       <template is="dom-repeat" items="[[coords]]" as="coord">
-        <google-map-marker latitude="[[coord.geometry.coordinates.1]]" longitude="[[coord.geometry.coordinates.0]]" title="[[coord.properties.PARK]]" icon="[[parkIconUrl]]" on-google-map-marker-click="_handleClick" click-events>
+        <google-map-marker latitude="[[coord.geometry.coordinates.1]]" longitude="[[coord.geometry.coordinates.0]]" title="[[coord.properties.PARK]]" icon="[[parkIconUrl]]" on-google-map-marker-click="_handleMarkerClick" click-events>
         </google-map-marker>
       </template>
     </google-map>
@@ -81,19 +81,13 @@ Example:
       /**
        * A Object of the currently selected park
        */
-      selectedPark: {
-        type: Object,
-        value: function() {
-          return {};
-        }
-      },
+      selectedPark: Object,
 
       /**
        * Coordinates of dog parks
        */
-      coords: {
-        type: Array
-      }
+      coords: Array
+
     },
 
     ready: function() {},
@@ -111,12 +105,10 @@ Example:
       this.$.infocontainer.hidden = true;
     },
 
-    _handleClick: function(marker) {
+    _handleMarkerClick: function(marker) {
       //get index from marker and use it to get park-node from COORDS(ajax-response)
       this.selectedPark = this.coords[marker.model.__data__.index];
       this.$.infocontainer.hidden = false;
-
-
 
     }
   });
