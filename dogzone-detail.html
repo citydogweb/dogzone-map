@@ -12,6 +12,7 @@
       :host {
         display: block;
         background-color: white;
+
       }
 
       paper-fab.amber {
@@ -36,7 +37,8 @@
 
       #infomap {
         padding: 6px;
-        height: 55%;
+        height: 80%;
+
       }
 
       #infocontent {
@@ -45,7 +47,10 @@
       }
 
       #satmap {
-        height: 300px;
+        /*height: 300px;*/
+        height: 55%;     /* full height of the content box */
+        min-height: 20em; /* Will be AT LEAST 20em tall */
+
         width: 100%;
       }
     </style>
@@ -60,7 +65,7 @@
         </h2>
         <h4>
           <p>
-            <!-- <span>Typ: </span> -->
+            <span>Typ: </span>
             <span>[[type]]</span>
           </p>
         </h4>

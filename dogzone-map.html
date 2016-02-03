@@ -39,10 +39,10 @@ Example:
       #infocontainer {
         /*background-color: #FFF8E1;*/
         position: absolute;
-        height: 80%;
+
         width: 28%;
         right: 32px;
-        bottom: 10%;
+        top: 10%;
       }
     </style>
 
@@ -55,7 +55,7 @@ Example:
     </google-map>
     <dogzone-detail id="infocontainer"
                     name="[[selectedPark.properties.PARK]]"
-                    typ="[[selectedPark.properties.TYP]]"
+                    type="[[selectedPark.properties.TYP]]"
                     size="[[selectedPark.properties.FLAECHE]]"
                     longitude="[[selectedPark.geometry.coordinates.0]]"
                     latitude="[[selectedPark.geometry.coordinates.1]]"
@@ -73,7 +73,7 @@ Example:
        */
       parkIconUrl: {
         type: String,
-        // value: '../dog.png'
+        //value: 'dog_map_icon.png'
         value: 'https://raw.githubusercontent.com/citydogweb/dogzone-map/master/dog_map_icon.png'
           //value: 'map-iconset-svg:close'
       },
