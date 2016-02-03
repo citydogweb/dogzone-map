@@ -36,10 +36,9 @@ Example:
         bottom: 0;
         left: 0;
       }
-      #infocontainer {
-        /*background-color: #FFF8E1;*/
-        position: absolute;
 
+      #infocontainer {
+        position: absolute;
         width: 28%;
         right: 32px;
         top: 10%;
@@ -53,13 +52,8 @@ Example:
         </google-map-marker>
       </template>
     </google-map>
-    <dogzone-detail id="infocontainer"
-                    name="[[selectedPark.properties.PARK]]"
-                    type="[[selectedPark.properties.TYP]]"
-                    size="[[selectedPark.properties.FLAECHE]]"
-                    longitude="[[selectedPark.geometry.coordinates.0]]"
-                    latitude="[[selectedPark.geometry.coordinates.1]]"
-                    hidden="true"></dogzone-detail>
+    <dogzone-detail id="infocontainer" name="[[selectedPark.properties.PARK]]" type="[[selectedPark.properties.TYP]]" size="[[selectedPark.properties.FLAECHE]]" longitude="[[selectedPark.geometry.coordinates.0]]" latitude="[[selectedPark.geometry.coordinates.1]]"
+      hidden="true"></dogzone-detail>
   </template>
 </dom-module>
 

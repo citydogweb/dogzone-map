@@ -12,7 +12,6 @@
       :host {
         display: block;
         background-color: white;
-
       }
 
       paper-fab.amber {
@@ -38,7 +37,6 @@
       #infomap {
         padding: 6px;
         height: 80%;
-
       }
 
       #infocontent {
@@ -48,9 +46,10 @@
 
       #satmap {
         /*height: 300px;*/
-        height: 55%;     /* full height of the content box */
-        min-height: 20em; /* Will be AT LEAST 20em tall */
-
+        height: 55%;
+        /* full height of the content box */
+        min-height: 20em;
+        /* Will be AT LEAST 20em tall */
         width: 100%;
       }
     </style>
@@ -123,16 +122,16 @@
       },
 
       ready: function() {
-          this.$.satmap.resize();
+        this.$.satmap.resize();
       },
 
       observers: [
         '_updateLatLong( hidden, latitude, longitude)'
       ],
 
-      _updateLatLong: function( hidden, latitude, longitude) {
-          this.hidden = hidden;
-          this.$.satmap.resize();
+      _updateLatLong: function(hidden, latitude, longitude) {
+        this.hidden = hidden;
+        this.$.satmap.resize();
       },
 
       resize: function() {
