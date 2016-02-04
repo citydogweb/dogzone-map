@@ -22,6 +22,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body>
 
     <!-- You can use the document as a place to set up your fixtures. -->
+    <style>
+      dogzone-map {
+        height: 800px;
+      }
+    </style>
     <dogzone-map></dogzone-map>
 
     <script>
@@ -29,24 +34,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       suite('<dogzone-map>', function() {
 
-        test('defines the "author" property', function() {
-          assert.equal(myEl.author.name, 'Dimitri Glazkov');
-          assert.equal(myEl.author.image, 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg');
-        });
+        test('make sure the parkIconUrl to be set', function() {
+          assert.equal(myEl.parkIconUrl, 'https://raw.githubusercontent.com/citydogweb/dogzone-map/master/dog_map_icon.png');
 
-        test('says hello', function() {
-          assert.equal(myEl.sayHello(), 'dogzone-map says, Hello World!');
-
-          var greetings = myEl.sayHello('greetings Earthlings');
-          assert.equal(greetings, 'dogzone-map says, greetings Earthlings');
-        });
-
-        test('fires lasers', function(done) {
-          myEl.addEventListener('dogzone-map-lasers', function(event) {
-            assert.equal(event.detail.sound, 'Pew pew!');
-            done();
-          });
-          myEl.fireLasers();
         });
 
       });
