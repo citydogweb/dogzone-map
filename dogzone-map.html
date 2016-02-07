@@ -91,7 +91,11 @@ Example without search bar:
         <paper-input label="Suche Park ..." value="{{_filterString::input}}">
       </paper-icon-item>
     </paper-card>
-    <dogzone-detail id="infocontainer" name="[[_selectedPark.properties.PARK]]" type="[[_selectedPark.properties.TYP]]" size="[[_selectedPark.properties.FLAECHE]]" longitude="[[_selectedPark.geometry.coordinates.0]]" latitude="[[_selectedPark.geometry.coordinates.1]]"
+    <dogzone-detail id="infocontainer" name="[[_selectedPark.properties.PARK]]"
+                                       type="[[_selectedPark.properties.TYP]]"
+                                       size="[[_selectedPark.properties.FLAECHE]]"
+                                       longitude="[[_selectedPark.geometry.coordinates.0]]"
+                                       latitude="[[_selectedPark.geometry.coordinates.1]]"
       hidden="true"></dogzone-detail>
   </template>
 </dom-module>
