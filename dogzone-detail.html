@@ -3,18 +3,20 @@
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../paper-fab/paper-fab.html">
 <link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="../paper-styles/typography.html">
 
 <!-- all used icons to not load full iconsets -->
 <link rel="import" href="map-iconset-svg.html">
 <dom-module id="dogzone-detail">
   <template>
-    <style>
+    <style is="custom-style">
       :host {
+        @apply(--detail-view-theme);
         display: block;
         background-color: white;
       }
 
-      paper-fab.amber {
+      paper-fab {
         position: absolute;
         top: 24px;
         right: 24px;
@@ -42,6 +44,7 @@
       #infocontent {
         padding-left: 24px;
         height: 35%;
+        @apply(--info-content-theme);
       }
 
       #satmap {
@@ -86,7 +89,7 @@
           </p>
         </h5>
       </div>
-      <paper-fab id="fab" mini icon="map-iconset-svg:close" class="amber" on-click="_handleClose"></paper-fab>
+      <paper-fab mini icon="map-iconset-svg:close" on-click="_handleClose"></paper-fab>
     </paper-material>
   </template>
   <script>
