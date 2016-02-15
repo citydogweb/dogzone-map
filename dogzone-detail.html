@@ -2,8 +2,8 @@
 <link rel="import" href="../google-map/google-map.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../paper-fab/paper-fab.html">
-<link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../paper-card/paper-card.html">
 
 <!-- all used icons to not load full iconsets -->
 <link rel="import" href="map-iconset-svg.html">
@@ -13,84 +13,64 @@
       :host {
         @apply(--detail-view-theme);
         display: block;
+        box-sizing: border-box;
+        margin-right: 32px;
         background-color: white;
       }
 
       paper-fab {
         position: absolute;
-        top: 24px;
-        right: 24px;
+        top: 32px;
+        right: 32px;
         --paper-fab-background: var(--paper-amber-500);
         --paper-fab-keyboard-focus-background: var(--paper-amber-900);
       }
 
-      h2 {
-        color: #262626;
+      .title {
+        @apply(--paper-font-title);
+
       }
 
-      h4 {
-        color: #505050;
+      .primary {
+        color: var(--primary-text-color);
+        @apply(--paper-font-body2);
+
       }
 
-      h5 {
-        color: #616161;
-      }
+      .secondary {
+        color: var(--secondary-text-color);
+        @apply(--paper-font-body1);
 
-      #infomap {
-        padding: 6px;
-        height: 80%;
-      }
-
-      #infocontent {
-        padding-left: 24px;
-        height: 35%;
-        @apply(--info-content-theme);
       }
 
       #satmap {
-        /*height: 300px;*/
-        height: 55%;
-        /* full height of the content box */
-        min-height: 20em;
-        /* Will be AT LEAST 20em tall */
-        width: 100%;
+        min-height: 300px;
+        width: 350px;
       }
     </style>
-    <paper-material elevation="5">
-      <div id="infomap">
+
+    <paper-card>
+      <div class="card-content">
         <google-map id="satmap" disable-default-ui map-type="satellite" latitude="[[latitude]]" longitude="[[longitude]]" zoom="18">
         </google-map>
+        <paper-fab mini icon="map-iconset-svg:close" on-click="_handleClose"></paper-fab>
       </div>
-      <div id="infocontent">
-        <h2>
-          <p id="pname">[[name]]</p>
-        </h2>
-        <h4>
-          <p>
-            <span>Typ: </span>
-            <span>[[type]]</span>
-          </p>
-        </h4>
-        <h5>
-          <p>
-            <span>Fläche: </span>
-            <span>[[size]]</span>
-          </p>
-          <p>
-            <span>Einfriedung: </span>
-            <span>[[fence]]</span>
-          </p>
-          <p>
-            <span>geo:(</span>
-            <span>[[longitude]]</span>
-            <span> / </span>
-            <span>[[latitude]]</span>
-            <span>)</span>
-          </p>
-        </h5>
+      <div class="card-content">
+        <div class="title">[[name]]</div>
       </div>
-      <paper-fab mini icon="map-iconset-svg:close" on-click="_handleClose"></paper-fab>
-    </paper-material>
+      <div class="card-content">
+
+        <div class="primary">
+          <span>Typ: [[type]]</span>
+        </div>
+        <div class="primary">
+          <span>Größe: [[size]]</span>
+        </div>
+        <div class="primary">
+          Einfriedung: [[fence]]
+        </div>
+    </paper-card>
+
   </template>
   <script>
     Polymer({
