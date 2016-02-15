@@ -11,9 +11,11 @@ Please feel free to use this element in any way you like.
 <link rel="import" href="../paper-item/paper-icon-item.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../poly-filter/poly-filter-diacritic.html">
+
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="dogzone-detail.html">
 <link rel="import" href="map-iconset-svg.html">
+
 
 <!-- all used icons to not load full iconsets -->
 
@@ -67,9 +69,16 @@ Example without search bar:
 
       paper-card {
         position: absolute;
+        width: 30%;
+        max-width: 400px;
+        min-width: 200px;
         top: 25px;
         left: 25px;
         z-index: 1;
+      }
+
+      paper-input {
+        width: 100%;
       }
     </style>
 
