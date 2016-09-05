@@ -9,5 +9,6 @@ _[Demo and API Docs](https://citydogweb.github.io/dogzone-map)_
 install via [Bower](http://bower.io/):
 
     bower install --save citydogweb/dogzone-map
+    
 
 ## Travis
