@@ -30,7 +30,7 @@
     "poly-filter": "^1.2.2"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.1.7",
     "web-component-tester": "*"
   }
 }
