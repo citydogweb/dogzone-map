@@ -1,0 +1,7 @@
+language: node_js
+node_js: stable
+script:
+  - bash ./gpages_build.sh citydogweb dogzone-map tobiashutterer tobias.hutterer@gmail.com
+before_script:
+- npm install bower
+- export PATH=$PWD/node_modules/.bin:$PATH
