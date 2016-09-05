@@ -20,6 +20,7 @@ org=$1
 repo=$2
 name=$3
 email=$4
+
 branch=${5:-"master"} # default to master when branch isn't specified
 
 mkdir temp && cd temp
