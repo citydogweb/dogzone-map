@@ -83,13 +83,13 @@ Example without search bar:
       }
     </style>
 
-    <iron-ajax auto url="http://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="_handleParks"></iron-ajax>
+    <iron-ajax auto url="https://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="_handleParks"></iron-ajax>
     <google-map id="map" disable-default-ui fit-to-markers click-events on-google-map-click="_handleMapClick" click-events>
       <template is="dom-repeat" items="[[_filtered_coords]]" as="coord">
         <google-map-marker latitude="[[coord.geometry.coordinates.1]]" longitude="[[coord.geometry.coordinates.0]]" title="[[coord.properties.PARK]]" icon="[[parkIconUrl]]" on-google-map-marker-click="_handleMarkerClick" click-events>
         </google-map-marker>
       </template>
-    </google-map>     
+    </google-map>
 
     <poly-filter-diacritic filter="[[_filterString]]" array-to-filter="[[_coords]]" filtered-array="{{_filtered_coords}}" filter-by="[]" filter-max-depth="1" logical-or="or">
     </poly-filter-diacritic>
