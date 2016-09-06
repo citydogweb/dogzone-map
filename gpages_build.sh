@@ -1,5 +1,7 @@
-#
+# Fork of https://github.com/Polymer/tools/blob/master/bin/gp.sh
 # Modified to work with Travis CI automated builds
+# Check http://zisismaras.me/polymer/2015/12/02/automatic-github-pages-for-polymer-elements-with-travis-ci.html
+#
 # Original license follows
 #
 # @license
@@ -20,8 +22,6 @@ org=$1
 repo=$2
 name=$3
 email=$4
-
-
 branch=${5:-"master"} # default to master when branch isn't specified
 
 mkdir temp && cd temp
@@ -59,5 +59,7 @@ git config user.email $email
 # send it all to github
 git add -A .
 git commit -am 'Deploy to GitHub Pages'
+
 git push --force --quiet -u "https://${GH_TOKEN}@${GH_REF}" gh-pages > /dev/null 2>&1
-popd >/dev/nullH
+
+popd >/dev/null
