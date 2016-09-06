@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/citydogweb/dogzone-map.svg?branch=master)](https://travis-ci.org/citydogweb/dogzone-map)
 # dogzone-map
 
 An element providing a Google Map with all dog parks in Vienna / Austria
