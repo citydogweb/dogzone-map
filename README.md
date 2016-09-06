@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/citydogweb/dogzone-map.svg?branch=master)](https://travis-ci.org/citydogweb/dogzone-map)
 # dogzone-map
 
-An element providing a Google Map with all dog parks in Vienna / Austria
+  An element providing a Google Map with all dog parks in Vienna / Austria
 
 _[Demo and API Docs](https://citydogweb.github.io/dogzone-map)_
 
@@ -9,7 +9,7 @@ _[Demo and API Docs](https://citydogweb.github.io/dogzone-map)_
 
 install via [Bower](http://bower.io/):
 
-    bower install --save citydogweb/dogzone-map
-    
+  bower install --save citydogweb/dogzone-map
 
 ## Travis
+  Travis build for GH-Pages Demo Page included
