@@ -2,6 +2,7 @@
 # dogzone-map
 
   An element providing a Google Map with all dog parks in Vienna / Austria
+  Please feel free to use as you wish.
 
 _[Demo and API Docs](https://citydogweb.github.io/dogzone-map)_
 
