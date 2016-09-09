@@ -13,7 +13,7 @@ script:
   - xvfb-run wct
   - bash ./gpages_build.sh citydogweb dogzone-map tobiashutterer tobias.hutterer@gmail.com
 before_script:
-- npm polylint web-component-tester
+- npm install -g polylint web-component-tester
 - npm install bower
 - export PATH=$PWD/node_modules/.bin:$PATH
 - bower install
