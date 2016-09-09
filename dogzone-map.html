@@ -11,7 +11,6 @@ Please feel free to use this element in any way you like.
 <link rel="import" href="../paper-item/paper-icon-item.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../poly-filter/poly-filter-diacritic.html">
-
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="dogzone-detail.html">
 <link rel="import" href="map-iconset-svg.html">
@@ -51,7 +50,7 @@ Example without search bar:
         display: block;
         height: 100%;
       }
-
+      
       #map {
         position: absolute;
         top: 0;
@@ -59,15 +58,14 @@ Example without search bar:
         bottom: 0;
         left: 0;
       }
-
+      
       #infocontainer {
         position: absolute;
         box-sizing: border-box;
         right: 0;
         top: 10%;
-
       }
-
+      
       paper-card {
         position: absolute;
         width: 30%;
@@ -77,21 +75,23 @@ Example without search bar:
         left: 25px;
         z-index: 1;
       }
-
+      
       paper-input {
         width: 100%;
       }
     </style>
 
-    <iron-ajax auto url="https://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}' handleAs="json" on-response="_handleParks"></iron-ajax>
+    <iron-ajax auto url="https://data.wien.gv.at/daten/geo/" params='{"service":"WFS", "request":"getFeature", "version":"1.1.0", "typeName":"ogdwien:HUNDEZONEOGD", "srsName":"EPSG:4326", "outputFormat":"json"}'
+      handleAs="json" on-response="_handleParks"></iron-ajax>
     <google-map id="map" disable-default-ui fit-to-markers click-events on-google-map-click="_handleMapClick" click-events>
       <template is="dom-repeat" items="[[_filtered_coords]]" as="coord">
-        <google-map-marker latitude="[[coord.geometry.coordinates.1]]" longitude="[[coord.geometry.coordinates.0]]" title="[[coord.properties.PARK]]" icon="[[parkIconUrl]]" on-google-map-marker-click="_handleMarkerClick" click-events>
+        <google-map-marker latitude="[[coord.geometry.coordinates.1]]" longitude="[[coord.geometry.coordinates.0]]" title="[[coord.properties.PARK]]"
+          icon="[[parkIconUrl]]" on-google-map-marker-click="_handleMarkerClick" click-events>
         </google-map-marker>
       </template>
     </google-map>
-
-    <poly-filter-diacritic filter="[[_filterString]]" array-to-filter="[[_coords]]" filtered-array="{{_filtered_coords}}" filter-by="[]" filter-max-depth="1" logical-or="or">
+    <poly-filter-diacritic filter="[[_filterString]]" array-to-filter="[[_coords]]" filtered-array="{{_filtered_coords}}" filter-by="[]"
+      filter-max-depth="1" logical-or="or">
     </poly-filter-diacritic>
 
     <paper-card elevation="2" id="search">
@@ -101,8 +101,9 @@ Example without search bar:
         <paper-input label="Suche Park ..." value="{{_filterString::input}}">
       </paper-icon-item>
     </paper-card>
-    <dogzone-detail id="infocontainer" name="[[_selectedPark.properties.PARK]]" type="[[_selectedPark.properties.TYP]]" fence="[[_selectedPark.properties.EINFRIEDUNG]]" size="[[_selectedPark.properties.FLAECHE]]" longitude="[[_selectedPark.geometry.coordinates.0]]"
-      latitude="[[_selectedPark.geometry.coordinates.1]]" hidden="true"></dogzone-detail>
+    <dogzone-detail id="infocontainer" name="[[_selectedPark.properties.PARK]]" type="[[_selectedPark.properties.TYP]]" fence="[[_selectedPark.properties.EINFRIEDUNG]]"
+      size="[[_selectedPark.properties.FLAECHE]]" longitude="[[_selectedPark.geometry.coordinates.0]]" latitude="[[_selectedPark.geometry.coordinates.1]]"
+      hidden="true"></dogzone-detail>
   </template>
 </dom-module>
 
@@ -151,7 +152,7 @@ Example without search bar:
 
     ready: function() {
       if (this.hideSearch) {
-        this.$.search.hidden = true;
+        this.$.search.hidden = true;        
       }
     },
 
