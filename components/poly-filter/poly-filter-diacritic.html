@@ -1,0 +1,52 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="poly-filter-diacritic-behavior.html">
+
+<!--
+A fast and customizable solution for client side filtering of large arrays that ignores diacritics,
+built with and for Polymer.
+
+Main features:
+- Token based and case-insensitive filtering
+- Configurable matching method (`contains`, `startsWith` or `equals`)
+- Support for large arrays without browser freeze
+- Fully declarative usage with bindable filter query, source array and result array
+- Configurable item properties and subproperties to asses
+- Support for the 'Google-like' quote (") operator
+- Custimozable logical 'OR' operator
+- Stop-words support to ignore configured tokens
+- Diacritics (accents and other character modifiers) support
+
+Example:
+
+    <poly-filter-diacritic
+      filter="[[myFilterOrQueryToSearchFor]]"
+      array-to-filter="[[myArrayToFilter]]"
+      filtered-array="{{myArrayAfterItWasFiltered}}"
+      stop-words="[[arrayOfWordsToIgnore]]"
+      logical-or="or">
+    </poly-filter-diacritic>
+
+### Notes
+
+If you are developing your own Polymer web-component with a filtering/searching functionality,
+consider using the `poly-filter-diacritic-behavior` directly for maximum performances.
+
+If you do not need to ignore accents (for example if you only deal with english language),
+you should use `poly-filter` or `poly-filter-behavior` for maximum performances.
+
+@element poly-filter-diacritic
+@demo demo/index.html
+-->
+<script>
+(function() {
+  'use strict';
+  Polymer({
+
+    is: 'poly-filter-diacritic',
+  
+    behaviors: [
+      Polymer.PolyFilterDiacriticBehavior
+    ]
+  });
+})();
+</script>

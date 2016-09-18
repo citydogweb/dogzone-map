@@ -1,0 +1,445 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+(function() {
+  'use strict';
+  /**
+   * `Polymer.PolyFilterBehavior` is a behavior implementing a fast and customizable solution
+   * for client-side filtering of arrays, built with and for Polymer.
+   * Works with languages that do not use diacritics, such as english (see `poly-filter-diacritic`
+   * or `poly-filter-diacritic-behavior` for diacritics handling).
+   *
+   * Main features:
+   * - Token-based and case-insensitive filtering
+   * - Configurable matching method (`contains`, `startsWith` or `equals`)
+   * - Support for large arrays without browser freeze
+   * - Fully declarative usage with bindable filter query, source array and result array
+   * - Configurable item properties and subproperties to asses
+   * - Support for the 'Google-like' quote (") operator
+   * - Custimozable logical 'OR' operator
+   * - Stop-words support to ignore configured tokens
+   * - Diacritics (accents and other character modifiers) support (see `poly-filter-diacritic` or `poly-filter-diacritic-behavior`)
+   *
+   * @polymerBehavior Polymer.PolyFilterBehavior
+   */
+  Polymer.PolyFilterBehavior = {
+
+    properties: {
+
+      /**
+       * Array ot items (Object or not) to filter.
+       */
+      arrayToFilter: {
+        type: Array,
+        value: function() {
+          return [];
+        },
+        observer: '_launchProcessArray'
+      },
+
+      /**
+       * Tokenized and flattened `arrayToFilter` to boost filtering performance.
+       */
+      _processedArray: {
+        type: Array,
+        readOnly: true
+      },
+
+      /**
+       * The output : All the items of `arrayToFilter` that survived filtering.
+       */
+      filteredArray: {
+        type: Array,
+        readOnly: true,
+        notify: true,
+        value: function() {
+          return [];
+        }
+      },
+
+      /**
+       * The String used to filter the collection of items `arrayToFilter`.
+       */
+      filter: {
+        type: String,
+        value: undefined,
+        observer: '_launchGenerateFilteredArray'
+      },
+
+      /**
+       * Minimum length of the `filter` String to be taken into account.
+       */
+      filterMinLength: {
+        type: Number,
+        value: 2
+      },
+
+      /**
+       * Debounce delay (in `ms`) before filtering when the `filter` String is changed.
+       */
+      filterDebounceDelay: {
+        type: Number,
+        value: 200
+      },
+
+      /**
+       * Single property (`String`) or list (`Array`) of the item's properties
+       * to take into account for the filtering.
+       *
+       * Example:
+       * If the items in `arrayToFilter` represents countries with these properties :
+       *     
+       *     {'code': 'FR', 'name': 'France', 'language': 'French'}
+       *     
+       * and you only want to filter your array based on the `name` and `code`, you must set
+       * `filterBy` to :
+       *     
+       *     ['code', 'name']
+       *
+       * ***Special cases :***
+       * - If an empty `Array`, item's in `arrayToFilter` will be filtered based
+       * on **all** their properties.
+       * - If `arrayToFilter` is a flat array (eg of `String`), then changing this property
+       * will have no effect.
+       * @type {Array|String}
+       */
+      filterBy: {
+        type: Object,
+        value: function() {
+          return [];
+        },
+        observer: '_launchProcessArray'
+      },
+
+      /**
+       * Maximum depth (number) of sub-properties in items of `arrayToFilter` to consider
+       * when filtering.
+       *
+       * Example:
+       * If the items in `arrayToFilter` are objet like these :
+       *     
+       *     {'lastname': 'foo',
+       *      'job': 
+       *      {'title': 'bartender',
+       *       'company':
+       *       {'name': 'foobar',
+       *        'address': '1 foobar street'
+       *       }
+       *      }
+       *     }
+       *     
+       * and `filterMaxDepth` is set to `1`, the company's name and address
+       * can never be inspected during filtering, but the job title can be.
+       */
+      filterMaxDepth: {
+        type: Number,
+        value: 1
+      },
+
+      /**
+       * RegExp used to tokenize `filter` and each properties of the items
+       * to filter (`arrayToFilter`).
+       * @type {RegExp}
+       */
+      filterTokenizerRegExp: {
+        type: RegExp,
+        value: function() {
+          return /[\s\b.?!",\\/|-]/gi;
+        }
+      },
+
+      /**
+       * Array of words that should be ignored during the filtering process.
+       * All the stop-words **must** be in lower case.
+       */
+      stopWords: {
+        type: Array,
+        value: function() {
+          return [];
+        },
+        observer: '_launchProcessArray'
+      },
+
+      /**
+       * Case insensitive Logical OR operator.
+       *
+       * Example:
+       * If the logical OR operator is set to 'or' and the `filter` is 'united ki or wede',
+       * then a filtered country list will retain both 'United Kingdom' and 'Sweden'.
+       * 
+       * **Important:**
+       * This element uses regular expressions to match operator. Therefore, if you want
+       * to use any character that is a special one in `RegEx` (for exemple the pipe),
+       * then you need to escape it twice.
+       * Example:
+       * If you want to use `||` as the logical OR operator, then you need to set this
+       * property to `\\\\|\\\\|'.
+       */
+      logicalOr: {
+        type: String,
+        value: 'or'
+      },
+
+      /**
+       * The method to use to determine if an item matches the filter.
+       * The possible values are:
+       * - `'contains'` (default) For each token `t` in the `filter` query, one or more token of a given item need to contain said token `t`.
+       * - `'startsWith'`: For each token `t` in the `filter` query, one or more token of a given item need to start with said token `t`.
+       * - `'equals'` For each token `t` in the `filter` query, one or more token of a given item need to be equal to said token `t`.
+       */
+      filterMethod: {
+        type: String,
+        value: 'contains'
+      },
+
+      /**
+       * _Only change this if you encounter performance problems._
+       *
+       * Maximum number of items processed before the browser is given a chance to 'relax'.
+       * Increase this value for faster processing, but at the risk of freezing the browser.
+       * Decrease it if you deal with very large objects and the browser is freezing during
+       * filtering or pre-processing.
+       */
+      batchNumber: {
+        type: Number,
+        value: 50
+      },
+
+      /**
+       * RegExp that allows to "grab" strings between delimiters
+       * in order to check for a perfect match. Default delimiters are double quotes `"`.
+       * @type {RegExp}
+       */
+      _exactStringDelimiterRegExp: {
+        type: String,
+        value: function() {
+          return /(")(?:(?=(\\?))\2.)*?\1/g;
+        },
+        readOnly: true
+      }
+    },
+
+    observers: [
+      '_processArray(arrayToFilter.*, filterBy.*, filterTokenizerRegExp, filterMaxDepth, stopWords.*)',
+      '_generateFilteredArray(_processedArray, filterMinLength, filterDebounceDelay, logicalOr, filterMethod, _exactStringDelimiterRegExp)'
+    ],
+
+    get _logicalOrRegEx() {
+      return new RegExp('(^|\\s|\\b)' + this.logicalOr + '($|\\s|\\b)(?=(?:[^\\"]*\\"[^\\"]*\\")*[^\\"]*$)', 'gi');
+    },
+
+    get _filterMethod() {
+      var method = function(token) {return function(str) {return str.indexOf(token) > -1;};};
+      if (this.filterMethod === 'startsWith') {
+        method = function(token) {return function(str) {return str.startsWith(token);};};
+      } else if (this.filterMethod === 'equals') {
+        method = function(token) {return function(str) {return str === token;};};
+      }
+      return method;
+    },
+
+    _launchGenerateFilteredArray: function() {
+      this._generateFilteredArray(this._processedArray, this.filterMinLength, this.filterDebounceDelay, this.logicalOr, this.filterMethod, this._exactStringDelimiterRegExp);
+    },
+
+    _launchProcessArray: function() {
+      this._processArray({base: this.arrayToFilter}, {base: this.filterBy}, this.filterTokenizerRegExp, this.filterMaxDepth, {base: this.stopWords});
+    },
+
+    /**
+     * Actual filtering function.
+     */
+    _generateFilteredArray: function(_processedArray, filterMinLength, filterDebounceDelay, logicalOr, filterMethod, _exactStringDelimiterRegExp) {
+      if (!this.filterTokenizerRegExp) {
+        throw 'filterTokenizerRegExp must not be undefined';
+      }
+
+      this.debounce('_generateFilteredArray' + this.localName, function() {
+        var filterLc = ('' + (this.filter || '')).toLowerCase().trim();
+        if (typeof this.arrayToFilter === 'undefined' || this.arrayToFilter.length === 0) {
+          this._setFilteredArray([]);
+        } else if (filterLc.length < (filterMinLength || 2)) {
+          // filter is not long enough, we appaly no filtering
+          this._setFilteredArray(this.arrayToFilter.slice());
+        } else {
+          var filterMethodImpl = this._filterMethod;
+          var stopWords = this.stopWords || [];
+          var result = [], itemTokensAndValues, j = 0, length = this.arrayToFilter.length;
+          // Fix : If odd number of quotes, we need to ignore the last one to match our logical or pattern
+          var quotesCount = (filterLc.match(/\"/g) || []).length;
+          if (quotesCount & 1) {
+            filterLc = filterLc.replace(/\"([^\"]*)$/,'$1');
+          }
+          // Breaking the filter/query on the logical OR to produce all tokens
+          var filterParts = logicalOr ? filterLc.split(this._logicalOrRegEx) : [filterLc];
+          var filterPart, exactStrings = [], filterPartsTokens = [];
+          for (var i = 0, l = filterParts.length; i < l; i++) {
+            filterPart = filterParts[i].trim();
+            // Extract strings between quotes (to match perfectly)
+            exactStrings = (filterPart.match(this._exactStringDelimiterRegExp) || []).map(function(str) {
+              return ('' + str).substring(1, str.length - 1).toLowerCase();
+            });
+            // remove strings between quotes
+            filterPart = filterPart.replace(this._exactStringDelimiterRegExp, '');
+            
+            if (filterPart || exactStrings.length > 0) {
+              filterPartsTokens.push({
+                values: exactStrings,
+                // tokenize the rest
+                tokens: this._processValue(filterPart, this.filterTokenizerRegExp, stopWords)
+              });
+            }
+          }
+
+          var process = function() {
+            for (; j < length; j++) {
+              // Actual filtering process: Instead of directly filtering the `arrayToFilter`, we traverse
+              // the preprocessed `_processedArray` to speed things up considerably.
+              itemTokensAndValues = _processedArray[j];
+              if (filterPartsTokens.some(function(filterTokens) {
+                return filterTokens.tokens.every(function(token) {
+                  return token && itemTokensAndValues.tokens.some(filterMethodImpl(token));
+                }) && filterTokens.values.every(function(exactString) {
+                  return exactString && itemTokensAndValues.values.some(function(v) {
+                    return v.indexOf(exactString) > -1;
+                  });
+                });
+              })) {
+                result.push(this.arrayToFilter[j]);
+              }
+              if (j + 1 === length) {
+                // All items processed, set the result
+                this._setFilteredArray(result);
+              }
+              else if (j % this.batchNumber === 0) {
+                this.async(process, 5);
+              }
+            }
+          }.bind(this);
+          process();
+        }
+      }, !isNaN(filterDebounceDelay) && filterDebounceDelay > -1 ? filterDebounceDelay : 200);
+    },
+
+    /**
+     * From a given `arrayToFilter`, produce a 'twin' array of by breaking specified
+     * item's properties into a flattened array of normalized tokens without stop-words.
+     */
+    _processArray: function(arrayToFilterChanges, filterByChanges, filterTokenizerRegExp, filterMaxDepth, stopWordsChanges) {
+      this.debounce('_processArray' + this.localName, function() {
+        var arrayToFilter = arrayToFilterChanges.base;
+        if (!filterTokenizerRegExp) {
+          throw 'filterTokenizerRegExp must not be undefined';
+        }
+        if (!(filterMaxDepth > -1)) {
+          throw 'filterMaxDepth (' + filterMaxDepth + ') must be a valid number >= 0';
+        }
+        var filterBy = this._concat([], filterByChanges.base);
+        var stopWords = stopWordsChanges.base || [];
+        if (typeof arrayToFilter === 'undefined' || arrayToFilter.length === 0) {
+           // The array to filter is empty or undefined, nothing to pre-process
+          this._set_processedArray([]);
+        } else {
+          var result = [], item, i = 0, length = arrayToFilter.length;
+          var process = function() {
+            for (; i < length; i++) {
+              item = arrayToFilter[i];
+              if (item) {
+                result.push(this._processItem(item, filterBy, filterTokenizerRegExp, 0, filterMaxDepth, stopWords));
+              }
+              if (i + 1 === length) {
+                // All items processed, set the result
+                this._set_processedArray(result);
+              }
+              else if (i % this.batchNumber === 0) {
+                this.async(process, 5);
+              }
+            }
+          }.bind(this);
+          process();
+        }
+      }, 10);
+    },
+
+    /**
+     * Break specified item's properties into a flattened array of
+     * normalized tokens without stop-words.
+     */
+    _processItem: function(item, filterBy, filterTokenizerRegExp, depth, filterMaxDepth, stopWords) {
+      if (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean') {
+        return {
+          values: typeof item !== 'undefined' && item !== null ? [('' + item).toLowerCase()] : undefined,
+          tokens: this._processValue(item, filterTokenizerRegExp, stopWords)
+        };
+      } else {
+        var flattenedItemTokensAndValues = {values: [], tokens: []};
+        if (item) {
+          if (item.constructor === Array) {
+            for (var i = 0, l = item.length; i < l; i++) {
+              flattenedItemTokensAndValues = this._concatValuesAndTokens(flattenedItemTokensAndValues, this._processItem(item[i], filterBy, filterTokenizerRegExp, depth + 1, filterMaxDepth, stopWords));
+            }
+          }
+          else if (depth <= filterMaxDepth) {
+            var filterAllProps = !filterBy || !filterBy.length;
+            for (var propName in item) {
+              if (!filterAllProps && filterBy.indexOf(propName) < 0) {
+                continue;
+              } else {
+                flattenedItemTokensAndValues = this._concatValuesAndTokens(flattenedItemTokensAndValues, this._processItem(item[propName], filterBy, filterTokenizerRegExp, depth + 1, filterMaxDepth, stopWords));
+              }
+            }
+          }
+        }
+        return flattenedItemTokensAndValues;
+      }
+    },
+
+    /**
+     * Break a given value into normalized tokens without stop-words.
+     */
+    _processValue: function(value, filterTokenizerRegExp, stopWords) {
+      // Safety checks
+      if (value === undefined || value === null || (value === NaN)) {
+        return undefined;
+      }
+      // Split value into tokens
+      var tokens = ('' + value).toLowerCase().split(filterTokenizerRegExp);
+      // Processing token, removing empty ones and stop words
+      var tt, me = this;
+      tokens = tokens.reduce(function(memo, t) {
+        tt = me._processToken(t);
+        if (tt && stopWords.indexOf(tt) < 0) {
+          memo.push(tt);
+        }
+        return memo;
+      }, []);
+      return tokens;
+    },
+
+    /**
+     * Normalize a token.
+     */
+    _processToken: function(token) {
+      return token.trim();
+    },
+
+    /**
+     * Safely concat two arrays.
+     */
+    _concat: function(dest, values) {
+      if (values) {
+        return dest.concat(values);
+      }
+      return dest;
+    },
+
+    _concatValuesAndTokens: function(dest, newSrc) {
+      if (newSrc) {
+        dest.tokens = this._concat(dest.tokens, newSrc.tokens);
+        dest.values = this._concat(dest.values, newSrc.values);
+      }
+      return dest;
+    }
+  };
+})();
+</script>

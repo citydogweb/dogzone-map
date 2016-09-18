@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="poly-filter-behavior.html">
+<script src="../js-replace-diacritics/replace-diacritics.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  /**
+   * `Polymer.PolyFilterDiacriticBehavior` adds diacritics removal to `Polymer.PolyFilterBehavior`
+   *
+   * Main features:
+   * - Token based and case-insensitive filtering
+   * - Configurable matching method (`contains`, `startsWith` or `equals`)
+   * - Support for large arrays without browser freeze
+   * - Fully declarative usage with bindable filter query, source array and result array
+   * - Configurable item properties and subproperties to asses
+   * - Support for the 'Google-like' quote (") operator
+   * - Custimozable logical 'OR' operator
+   * - Stop-words support to ignore configured tokens
+   * - Diacritics (accents and other character modifiers) support
+   *
+   * @polymerBehavior Polymer.PolyFilterDiacriticBehavior
+   */
+  Polymer.PolyFilterDiacriticBehaviorImpl = {
+
+    _processToken: function(token) {
+      return replaceDiacritics(token).trim();
+    }
+
+  };
+
+  /** @polymerBehavior Polymer.PolyFilterDiacriticBehavior */
+  Polymer.PolyFilterDiacriticBehavior = [
+    Polymer.PolyFilterBehavior,
+    Polymer.PolyFilterDiacriticBehaviorImpl
+  ];
+})();
+</script>

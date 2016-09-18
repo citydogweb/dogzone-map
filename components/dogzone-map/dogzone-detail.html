@@ -1,0 +1,126 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-map/google-map.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+<link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../paper-card/paper-card.html">
+
+<!-- all used icons to not load full iconsets -->
+<link rel="import" href="map-iconset-svg.html">
+<dom-module id="dogzone-detail">
+  <template>
+    <style is="custom-style">
+      :host {
+        @apply(--detail-view-theme);
+        display: block;
+        box-sizing: border-box;
+        margin-right: 32px;
+        background-color: white;
+        max-width: 382px;
+      }
+      
+      paper-fab {
+        position: absolute;
+        top: 32px;
+        right: 32px;
+        --paper-fab-background: var(--paper-amber-500);
+        --paper-fab-keyboard-focus-background: var(--paper-amber-900);
+      }
+      
+      .title {
+        @apply(--paper-font-title);
+      }
+      
+      .primary {
+        color: var(--primary-text-color);
+        @apply(--paper-font-body2);
+      }
+      
+      .secondary {
+        color: var(--secondary-text-color);
+        @apply(--paper-font-body1);
+      }
+      
+      #satmap {
+        min-height: 300px;
+        width: 350px;
+      }
+    </style>
+
+    <paper-card>
+      <div class="card-content">
+        <google-map id="satmap" disable-default-ui map-type="satellite" latitude="[[latitude]]" longitude="[[longitude]]" zoom="18">
+        </google-map>
+        <paper-fab mini icon="map-iconset-svg:close" on-click="_handleClose"></paper-fab>
+      </div>
+      <div class="card-content">
+        <div class="title">[[name]]</div>
+      </div>
+      <div class="card-content">
+        <div class="primary">
+          <span>Typ: [[type]]</span>
+        </div>
+        <div class="primary">
+          <span>Größe: [[size]]</span>
+        </div>
+        <div class="primary">
+          Einfriedung: [[fence]] 
+        </div>
+    </paper-card>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'dogzone-detail',
+      properties: {
+        hidden: {
+          type: Boolean,
+          notify: true,
+          reflectToAttribute: true
+        },
+        name: String,
+        type: String,
+        size: String,
+        fence: String,
+
+        longitude: {
+          type: Number,
+          //value: 37.77493,
+          notify: true,
+          reflectToAttribute: true
+        },
+
+
+        latitude: {
+          type: Number,
+          //value: 37.77493,
+          notify: true,
+          reflectToAttribute: true
+        }
+
+
+      },
+
+      ready: function() {
+        this.$.satmap.resize();
+      },
+
+      observers: [
+        '_updateLatLong( hidden, latitude, longitude)'
+      ],
+
+      _updateLatLong: function(hidden, latitude, longitude) {
+        this.hidden = hidden;
+        this.$.satmap.resize();
+      },
+
+      resize: function() {
+        this.$.satmap.resize();
+      },
+
+      _handleClose: function(event) {
+        this.hidden = true;
+      }
+    });
+  </script>
+</dom-module>
